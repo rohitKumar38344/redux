@@ -10,11 +10,22 @@ export default function filtersReducer(state = initialState, action) {
         ...state,
         status: action.payload,
       };
-    case 'filters/colorFilterChanged':
-      return {
-        ...state,
-        color: action.payload.color,
-      };
+    case 'filters/colorFilterChanged': {
+      if (action.payload.changeType === 'added') {
+        //add the color to the color list
+        return {
+          ...state,
+          color: [...state.color, action.payload.color],
+        };
+      } else {
+        // color removed option chosen
+        // remove the selector color from the colors array
+        return {
+          ...state,
+          color: state.color.filter((c) => c !== action.payload.colorType),
+        };
+      }
+    }
     default:
       return state;
   }
