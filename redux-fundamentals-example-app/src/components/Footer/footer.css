@@ -1,0 +1,7 @@
+.button-ctn {
+  display: flex;
+  gap: 1rem;
+}
+.active-filter {
+  border: 2px red dashed;
+}

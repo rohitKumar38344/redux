@@ -1,6 +1,6 @@
 const initialState = {
   status: 'All',
-  color: [],
+  colors: [],
 };
 
 export default function filtersReducer(state = initialState, action) {
@@ -15,14 +15,14 @@ export default function filtersReducer(state = initialState, action) {
         //add the color to the color list
         return {
           ...state,
-          color: [...state.color, action.payload.color],
+          colors: [...state.colors, action.payload.color],
         };
       } else {
         // color removed option chosen
         // remove the selector color from the colors array
         return {
           ...state,
-          color: state.color.filter((c) => c !== action.payload.colorType),
+          colors: state.colors.filter((c) => c !== action.payload.colorType),
         };
       }
     }

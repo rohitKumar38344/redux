@@ -1,5 +1,8 @@
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import rootReducer from './reducer.js';
-
-const store = createStore(rootReducer);
+import { thunk } from 'redux-thunk';
+// import { delayedMessageMiddleware } from './exampleAddons/delayedMessageMiddleware.js';
+// const middlewareEnhancer = applyMiddleware(delayedMessageMiddleware);
+const thunkMiddleware = applyMiddleware(thunk);
+const store = createStore(rootReducer, thunkMiddleware);
 export default store;

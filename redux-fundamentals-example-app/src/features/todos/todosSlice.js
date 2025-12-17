@@ -1,3 +1,4 @@
+import { client } from '../../api/client.js';
 const initialState = [];
 
 function nextTodoId(todos) {
@@ -7,6 +8,9 @@ function nextTodoId(todos) {
 
 export default function todosReducer(state = initialState, action) {
   switch (action.type) {
+    case 'todos/todosLoaded': {
+      return action.payload;
+    }
     case 'todos/todoAdded': {
       return [
         ...state,
@@ -42,27 +46,21 @@ export default function todosReducer(state = initialState, action) {
       });
     }
     case 'todos/todoDeleted': {
-      return state.filter(function (todo) {
-        if (todo.id !== action.payload) {
-          return todo;
-        }
-      });
+      return state.filter((todo) => todo.id !== action.payload);
     }
     case 'todos/allCompleted': {
-      return state.filter(function (todo) {
-        if (todo.completed) {
-          return todo;
-        }
-      });
+      return state.filter((todo) => todo.completed);
     }
     case 'todos/completedCleared': {
-      return state.filter(function (todo) {
-        if (!todo.completed) {
-          return todo;
-        }
-      });
+      return state.filter((todo) => !todo.completed);
     }
     default:
       return state;
   }
+}
+
+export async function fetchTodos(dispatch, getState) {
+  const response = await client.get('/fakeApi/todos');
+
+  dispatch({ type: 'todos/todosLoaded', payload: response.todos });
 }
