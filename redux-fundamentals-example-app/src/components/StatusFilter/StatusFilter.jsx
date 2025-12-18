@@ -1,6 +1,5 @@
 export const StatusFilter = ({ value: filter, onChange }) => {
   function handleFilterStatus(e) {
-    console.log('clicked');
     let filter = e.target.dataset.action;
     if (!filter) return;
     onChange(filter);

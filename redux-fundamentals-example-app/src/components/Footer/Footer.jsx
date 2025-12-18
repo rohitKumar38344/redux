@@ -22,7 +22,10 @@ export const Footer = () => {
   }
 
   function onStatusChange(status) {
+    // const nextTodos = todos.filter((todo) => todo.completed === status);
+    // console.log('footer todos:', todos);
     dispatch(statusFilterChanged(status));
+    // dispatch({ type: 'todos/todosLoaded', payload: nextTodos });
   }
 
   function onMarkCompletedClick() {
