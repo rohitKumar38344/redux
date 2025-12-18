@@ -8,7 +8,7 @@ import { fetchTodos } from './features/todos/todosSlice.js';
 
 import './api/server.js';
 
-store.dispatch(fetchTodos);
+store.dispatch(fetchTodos());
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 root.render(

@@ -1,25 +1,13 @@
 import { client } from '../../api/client.js';
 const initialState = [];
 
-function nextTodoId(todos) {
-  const maxId = todos.reduce((maxId, todo) => Math.max(todo.id, maxId), -1);
-  return maxId + 1;
-}
-
 export default function todosReducer(state = initialState, action) {
   switch (action.type) {
     case 'todos/todosLoaded': {
       return action.payload;
     }
     case 'todos/todoAdded': {
-      return [
-        ...state,
-        {
-          id: nextTodoId(state),
-          text: action.payload,
-          completed: false,
-        },
-      ];
+      return [...state, action.payload];
     }
 
     case 'todos/todoToggled': {
@@ -49,6 +37,7 @@ export default function todosReducer(state = initialState, action) {
       return state.filter((todo) => todo.id !== action.payload);
     }
     case 'todos/allCompleted': {
+      console.log('all completed clicked');
       return state.filter((todo) => todo.completed);
     }
     case 'todos/completedCleared': {
@@ -59,8 +48,26 @@ export default function todosReducer(state = initialState, action) {
   }
 }
 
-export async function fetchTodos(dispatch, getState) {
-  const response = await client.get('/fakeApi/todos');
-
-  dispatch({ type: 'todos/todosLoaded', payload: response.todos });
+export function fetchTodos() {
+  return async function fetchTodosThunk(dispatch, getState) {
+    const response = await client.get('/fakeApi/todos');
+    dispatch(todosLoaded(response.todos));
+  };
 }
+
+export const todosLoaded = (todos) => {
+  return { type: 'todos/todosLoaded', payload: todos };
+};
+
+export function saveNewTodo(text) {
+  // thunk action creator
+  return async function saveNewTodoThunk(dispatch, getState) {
+    const initialTodo = { text };
+    const response = await client.post('/fakeApi/todos', { todo: initialTodo });
+    dispatch(todoAdded(response.todo));
+  };
+}
+
+export const todoAdded = (todo) => {
+  return { type: 'todos/todoAdded', payload: todo };
+};
